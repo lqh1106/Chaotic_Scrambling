@@ -26,15 +26,32 @@ import plot
 # test.test(disorganized_table)
 # print("Time taken:", end_time - start_time)
 xpoints = []
-ypoints = []
+ypoints1 = []
+ypoints2 = []
+ypoints3 = []
+k = 10000
 for n in range(50, 1000):
 	xpoints.append(n)
-	order_total = 0
-	x0_min = 0.2
-	x0_max = 0.8
-	for i in range(100):
-		x0 = random.uniform(x0_min, x0_max)
+	order_total1 = 0
+	order_total2 = 0
+	order_total3 = 0
+	for i in range(k):
+		x0 = random.uniform(0.2, 0.8)
 		disorganized_table = scrambling.logistic(3.6, x0, 1000, n)
-		order_total += test.test(disorganized_table)
-	ypoints.append(order_total / ((i + 1)))
-plot.plot(xpoints, ypoints, 'Logistic', "x0 in (" + str(x0_min) + ',' + str(x0_max) + ')')
+		order_total1 += test.test(disorganized_table)
+	ypoints1.append(order_total1 / (k * n))
+
+	for i in range(k):
+		x0 = random.uniform(0.2, 0.8)
+		disorganized_table = scrambling.circle(0.5, 0.2, x0, 1000, n)
+		order_total2 += test.test(disorganized_table)
+	ypoints2.append(order_total2 / (k * n))
+
+	for i in range(k):
+		x0 = random.uniform(0.2, 0.8)
+		disorganized_table = scrambling.chebyshev(4, x0, 1000, n)
+		order_total3 += test.test(disorganized_table)
+	ypoints3.append(order_total3 / (k * n))
+	print(n, end=' ')
+plot.plot(xpoints, ypoints1, 'Logistic', ypoints2, 'Circle', ypoints3, 'Chebyshev', filename='order_ave-N',
+          title='order_ave-N')
