@@ -15,17 +15,17 @@ def lcm_of_list(numbers):
 
 
 def test(disorganized_table):
-	order = []
-	for i in disorganized_table:
-		if i != -1:
-			list = [disorganized_table.index(i)]
-			disorganized_table[disorganized_table.index(i)] = -1
-			j = i
-			while j not in list:
-				list.append(j)
-				j = disorganized_table[j]
-				disorganized_table[disorganized_table.index(j)] = -1
-			disorganized_table[int(list[-1])] = -1
-			order.append(len(list))
-	Order = lcm_of_list(order)
-	return Order
+    visited = set()
+    order = []
+
+    for i, val in enumerate(disorganized_table):
+        if val != -1 and i not in visited:
+            cycle_length = 0
+            j = i
+            while j not in visited:
+                visited.add(j)
+                j = disorganized_table[j]
+                cycle_length += 1
+            order.append(cycle_length)
+
+    return lcm_of_list(order) if order else 1
