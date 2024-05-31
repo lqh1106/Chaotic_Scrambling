@@ -27,6 +27,5 @@ def test(disorganized_table):
 				disorganized_table[disorganized_table.index(j)] = -1
 			disorganized_table[int(list[-1])] = -1
 			order.append(len(list))
-	print(order, end='')
 	Order = lcm_of_list(order)
-	print(Order)
+	return Order
