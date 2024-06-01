@@ -1,5 +1,5 @@
-import numpy as np
-import math
+from numpy import mod
+from math import pi,cos,acos,sin
 
 
 def logistic(u, x0, m, n):
@@ -18,20 +18,20 @@ def logistic(u, x0, m, n):
 def circle(a, b, x0, m, n):
 	x = x0
 	for i in range(m):
-		x = np.mod(x + b - a / (2 * math.pi) * math.sin(2 * math.pi * x), 1)
+		x = mod(x + b - a / (2 * pi) * sin(2 * pi * x), 1)
 	scramble = [x]
 	for i in range(n):
-		scramble.append(np.mod(scramble[-1] + b - a / (2 * math.pi) * math.sin(2 * math.pi * scramble[-1]), 1))
+		scramble.append(mod(scramble[-1] + b - a / (2 * pi) * sin(2 * pi * scramble[-1]), 1))
 	return sort(scramble)
 
 
 def chebyshev(a, x0, m, n):
 	x = x0
 	for i in range(m):
-		x = math.cos(a * math.acos(x))
+		x = cos(a * acos(x))
 	scramble = [x]
 	for i in range(n):
-		scramble.append(math.cos(a * math.acos(scramble[-1])))
+		scramble.append(cos(a * acos(scramble[-1])))
 	return sort(scramble)
 
 

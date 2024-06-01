@@ -4,76 +4,117 @@ import time
 import numpy as np
 import random
 import plot
+import concurrent.futures
+import random
+import time
+import scrambling
+import test
 
-# print("Logistic:", end='')
-# start_time = time.time()
-# disorganized_table = scrambling.logistic(3.6, 0.5, 1000, 500)
-# end_time = time.time()
-# test.test(disorganized_table)
-# print("Time taken:", end_time - start_time)
-#
-# print("Circle:", end='')
-# start_time = time.time()
-# disorganized_table = scrambling.circle(0.5, 0.2, 0.5, 1000, 500)
-# end_time = time.time()
-# test.test(disorganized_table)
-# print("Time taken:", end_time - start_time)
-#
-# print("Chebyshev:", end='')
-# start_time = time.time()
-# disorganized_table = scrambling.chebyshev(4, 0.6, 1000, 500)
-# end_time = time.time()
-# test.test(disorganized_table)
-# print("Time taken:", end_time - start_time)
-xpoints = []
-ypoints1 = []
-ypoints2 = []
-ypoints3 = []
-tpoints1 = []
-tpoints2 = []
-tpoints3 = []
-k = 100
-for n in range(50, 1000):
-	xpoints.append(n)
-	time_total1 = 0
-	time_total2 = 0
-	time_total3 = 0
-	order_total1 = 0
-	order_total2 = 0
-	order_total3 = 0
-	for i in range(k):
-		x0 = random.uniform(0.2, 0.8)
-		start_time = time.time()
-		disorganized_table = scrambling.logistic(3.6, x0, 1000, n)
-		end_time = time.time()
-		time_total1 += (end_time - start_time)
-		order_total1 += test.test(disorganized_table)
-	ypoints1.append(order_total1 / (k * n))
-	tpoints1.append(time_total1 / k)
 
-	for i in range(k):
-		x0 = random.uniform(0.2, 0.8)
-		start_time = time.time()
-		disorganized_table = scrambling.circle(0.5, 0.2, x0, 1000, n)
-		end_time = time.time()
-		time_total2 += (end_time - start_time)
-		order_total2 += test.test(disorganized_table)
-	ypoints2.append(order_total2 / (k * n))
-	tpoints2.append(time_total2 / k)
+def generate_data(n):
+	order1 = {}
+	order2 = {}
+	order3 = {}
+	time1 = {}
+	time2 = {}
+	time3 = {}
+	k = 10000
 
-	for i in range(k):
-		x0 = random.uniform(0.2, 0.8)
-		start_time = time.time()
-		disorganized_table = scrambling.chebyshev(4, x0, 1000, n)
-		end_time = time.time()
-		time_total3 += (end_time - start_time)
-		order_total3 += test.test(disorganized_table)
-	ypoints3.append(order_total3 / (k * n))
-	tpoints3.append(time_total3 / k)
+	for n_val in range(50, n):
+		time_total1 = 0
+		time_total2 = 0
+		time_total3 = 0
+		order_total1 = 0
+		order_total2 = 0
+		order_total3 = 0
 
-	print(n, end=' ')
-plot.plot(xpoints, ypoints1, 'Logistic', ypoints2, 'Circle', ypoints3, 'Chebyshev','order_ave',filename='order_ave-N',
-          title='order_ave-N')
-plot.plot(xpoints, tpoints1, 'Logistic', tpoints2, 'Circle', tpoints3, 'Chebyshev','time_ave',filename='time_ave-N',
-          title='time_ave-N')
+		for i in range(k):
+			x0 = random.uniform(0, 1)
+			start_time = time.time()
+			disorganized_table = scrambling.logistic(3.6, x0, 1000, n_val)
+			end_time = time.time()
+			time_total1 += (end_time - start_time)
+			order_total1 += test.test(disorganized_table)
 
+		order1[n_val] = (order_total1 / k)
+		time1[n_val] = (time_total1 / k)
+
+		for i in range(k):
+			x0 = random.uniform(0, 1)
+			start_time = time.time()
+			disorganized_table = scrambling.logistic(3.6, x0, 1000, n_val)
+			end_time = time.time()
+			time_total2 += (end_time - start_time)
+			order_total2 += test.test(disorganized_table)
+
+		order2[n_val] = (order_total2 / k)
+		time2[n_val] = (time_total2 / k)
+
+		for i in range(k):
+			x0 = random.uniform(0, 1)
+			start_time = time.time()
+			disorganized_table = scrambling.logistic(3.6, x0, 1000, n_val)
+			end_time = time.time()
+			time_total3 += (end_time - start_time)
+			order_total3 += test.test(disorganized_table)
+
+		order3[n_val] = (order_total3 / k)
+		time3[n_val] = (time_total3 / k)
+
+	return order1, order2, order3, time1, time2, time3
+
+
+def main():
+	n_values = range(50, 1000)  # 或者您想要的其他范围
+	data_points = []
+
+	with concurrent.futures.ThreadPoolExecutor(max_workers=20) as executor:
+		future_to_n = {executor.submit(generate_data, n): n for n in n_values}
+		for future in concurrent.futures.as_completed(future_to_n):
+			n = future_to_n[future]
+			try:
+				data_points.append(future.result())
+				print(f"Finished processing n={n}")
+			except Exception as exc:
+				print(f"Error processing n={n}: {exc}")
+	order1 = {}
+	order2 = {}
+	order3 = {}
+	time1 = {}
+	time2 = {}
+	time3 = {}
+	for data in data_points:
+		order1 = {**order1, **data[0]}
+		order2 = {**order2, **data[1]}
+		order3 = {**order3, **data[2]}
+		time1 = {**time1, **data[3]}
+		time2 = {**time2, **data[4]}
+		time3 = {**time3, **data[5]}
+	sorted_keys = sorted(order1.keys())
+	xpoints = sorted_keys
+	ypoints1 = [order1[key] for key in sorted_keys]
+
+	sorted_keys = sorted(order2.keys())
+	ypoints2 = [order2[key] for key in sorted_keys]
+
+	sorted_keys = sorted(order3.keys())
+	ypoints3 = [order3[key] for key in sorted_keys]
+
+	sorted_keys = sorted(time1.keys())
+	tpoints1 = [time1[key] for key in sorted_keys]
+
+	sorted_keys = sorted(time2.keys())
+	tpoints2 = [time2[key] for key in sorted_keys]
+
+	sorted_keys = sorted(time3.keys())
+	tpoints3 = [time3[key] for key in sorted_keys]
+
+	plot.plot(xpoints, ypoints1, 'Logistic', ypoints2, 'Circle', ypoints3, 'Chebyshev', 'order_ave',
+	          filename='order_ave-N', title='order_ave-N')
+
+	plot.plot(xpoints, tpoints1, 'Logistic', tpoints2, 'Circle', tpoints3, 'Chebyshev', 'time_ave',
+	          filename='time_ave-N', title='time_ave-N')
+
+
+if __name__ == "__main__":
+	main()
