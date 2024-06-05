@@ -12,8 +12,8 @@ ypoints3 = []
 tpoints1 = []
 tpoints2 = []
 tpoints3 = []
-k = 1
-for n in range(50, 500):
+k = 10000
+for n in range(50, 100):
 	xpoints.append(n)
 	time_total1 = 0
 	time_total2 = 0
