@@ -12,7 +12,7 @@ ypoints3 = []
 tpoints1 = []
 tpoints2 = []
 tpoints3 = []
-test_count = 10
+test_count = 10000
 test_range = range(50, 100)
 for n in test_range:
 	xpoints.append(n)
