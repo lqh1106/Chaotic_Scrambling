@@ -2,9 +2,11 @@ import tkinter as tk
 import pyperclip
 import scrambling
 
+
 def calculate_result():
 	# 获取输入值
 	message = message_entry.get()
+	message = message.replace('\n', '')
 	way = way_var.get()
 	key = float(key_entry.get())
 	operation = operation_var.get()
@@ -12,11 +14,11 @@ def calculate_result():
 	# 根据用户选择调用相应的函数
 	if operation == "Encode":
 		if way == "Logistic":
-			result = scrambling.encode(message,0,key)
+			result = scrambling.encode(message, 0, key)
 		elif way == "Circle":
-			result = scrambling.encode(message,1,key)
+			result = scrambling.encode(message, 1, key)
 		elif way == "Chebyshev":
-			result = scrambling.encode(message,2,key)
+			result = scrambling.encode(message, 2, key)
 		else:
 			result = "Invalid way"
 	elif operation == "Decode":

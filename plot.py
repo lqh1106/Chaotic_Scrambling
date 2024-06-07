@@ -24,6 +24,6 @@ def plot(xpoints, ypoints1, name1, ypoints2, name2, ypoints3, name3, ylable, fil
 		plt.ylabel(ylable)
 	plt.title(title)
 	plt.legend()
-	folder_path = "./plot/test_count=" + str(test_count) + ' in ' + str(test_range)
+	folder_path = f"./plot/test_count={test_count} in {test_range}"
 	os.makedirs(folder_path, exist_ok=True)
 	plt.savefig(folder_path + '/' + filename)

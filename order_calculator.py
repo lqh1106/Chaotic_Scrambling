@@ -1,15 +1,11 @@
-def gcd(a, b):
-	while b:
-		a, b = b, a % b
-	return a
-
-
-def lcm_of_list(numbers):
-	lcm_result = numbers[0]
-	for i in range(1, len(numbers)):
-		lcm_result = (lcm_result * numbers[i]) // gcd(lcm_result, numbers[i])
-	return lcm_result
-
+import numpy as np
+def lcm_of_list(lst):
+    if len(lst) == 0:
+        return 1
+    lcm = lst[0]
+    for i in range(1, len(lst)):
+        lcm = np.lcm(lcm, lst[i])
+    return lcm
 
 def test(disorganized_table):
 	visited = set()
