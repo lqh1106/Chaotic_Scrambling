@@ -117,5 +117,5 @@ if __name__ == '__main__':
 	test_count = 10000
 	test_range = range(50, 1000)
 	test_time_and_order(test_count, test_range)
-	test_count = 10
+	test_count = 1
 	test_sensitivity(test_count, test_range)
