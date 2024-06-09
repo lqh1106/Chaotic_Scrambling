@@ -8,9 +8,9 @@ import plot
 
 def test_time_and_order(test_count, test_range):
 	xpoints = []
-	ypoints1 = []
-	ypoints2 = []
-	ypoints3 = []
+	# ypoints1 = []
+	# ypoints2 = []
+	# ypoints3 = []
 	tpoints1 = []
 	tpoints2 = []
 	tpoints3 = []
@@ -28,8 +28,8 @@ def test_time_and_order(test_count, test_range):
 			disorganized_table = scrambling.logistic(x0, 1000, n)
 			end_time = time.time()
 			time_list1.append(end_time - start_time)
-			order_list1.append(order_calculator.test(disorganized_table))
-		ypoints1.append(np.mean(order_list1))
+			# order_list1.append(order_calculator.test(disorganized_table))
+		# ypoints1.append(np.mean(order_list1))
 		tpoints1.append(np.mean(time_list1))
 
 		for i in range(test_count):
@@ -38,8 +38,8 @@ def test_time_and_order(test_count, test_range):
 			disorganized_table = scrambling.circle(x0, 1000, n)
 			end_time = time.time()
 			time_list2.append(end_time - start_time)
-			order_list2.append(order_calculator.test(disorganized_table))
-		ypoints2.append(np.mean(order_list2))
+			# order_list2.append(order_calculator.test(disorganized_table))
+		# ypoints2.append(np.mean(order_list2))
 		tpoints2.append(np.mean(time_list2))
 
 		for i in range(test_count):
@@ -48,13 +48,13 @@ def test_time_and_order(test_count, test_range):
 			disorganized_table = scrambling.chebyshev(x0, 1000, n)
 			end_time = time.time()
 			time_list3.append(end_time - start_time)
-			order_list3.append(order_calculator.test(disorganized_table))
-		ypoints3.append(np.mean(order_list3))
+		# 	order_list3.append(order_calculator.test(disorganized_table))
+		# ypoints3.append(np.mean(order_list3))
 		tpoints3.append(np.mean(time_list3))
 
 		print(f'test time and order:N={n}')
-	plot.plot(xpoints, ypoints1, 'Logistic', ypoints2, 'Circle', ypoints3, 'Chebyshev', 'order_ave', 'order_ave vs N',
-	          'order_ave vs N', test_count, test_range, True)
+	# plot.plot(xpoints, ypoints1, 'Logistic', ypoints2, 'Circle', ypoints3, 'Chebyshev', 'order_ave', 'order_ave vs N',
+	#           'order_ave vs N', test_count, test_range, True)
 	plot.plot(xpoints, tpoints1, 'Logistic', tpoints2, 'Circle', tpoints3, 'Chebyshev', 'time_ave', 'time_ave vs N',
 	          'time_ave vs N', test_count, test_range, False)
 
@@ -119,3 +119,4 @@ if __name__ == '__main__':
 	test_time_and_order(test_count, test_range)
 	test_count = 1
 	test_sensitivity(test_count, test_range)
+

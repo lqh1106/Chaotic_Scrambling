@@ -1,11 +1,14 @@
 import numpy as np
+
+
 def lcm_of_list(lst):
-    if len(lst) == 0:
-        return 1
-    lcm = lst[0]
-    for i in range(1, len(lst)):
-        lcm = np.lcm(lcm, lst[i])
-    return lcm
+	if len(lst) == 0:
+		return 1
+	lcm = lst[0]
+	for i in range(1, len(lst)):
+		lcm = np.lcm(lcm, lst[i])
+	return lcm
+
 
 def test(disorganized_table):
 	visited = set()

@@ -11,8 +11,8 @@ def calculate_result():
 	key = float(key_entry.get())
 	operation = operation_var.get()
 
-	# 根据用户选择调用相应的函数
-	if operation == "Encode":
+	# exec(f"result = scrambling.{operation}({message},{way},key)")
+	if operation == "encode":
 		if way == "Logistic":
 			result = scrambling.encode(message, 0, key)
 		elif way == "Circle":
@@ -21,7 +21,7 @@ def calculate_result():
 			result = scrambling.encode(message, 2, key)
 		else:
 			result = "Invalid way"
-	elif operation == "Decode":
+	elif operation == "decode":
 		if way == "Logistic":
 			result = scrambling.decode(message, 0, key)
 		elif way == "Circle":
@@ -67,7 +67,7 @@ operation_label = tk.Label(root, text="Operation:")
 operation_label.grid(row=3, column=0, padx=5, pady=5)
 operation_var = tk.StringVar(root)
 operation_var.set("Encode")  # 默认选择Encode
-operation_radios = [("Encode", "Encode"), ("Decode", "Decode")]
+operation_radios = [("Encode", "encode"), ("Decode", "decode")]
 for i, (text, value) in enumerate(operation_radios):
 	tk.Radiobutton(root, text=text, variable=operation_var, value=value).grid(row=3, column=i + 1, padx=5, pady=5)
 
